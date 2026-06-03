@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shaikh Muhammad Tahir – Lead Data Analyst</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0b1520; color: #dce6f0; }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0d1e30 0%, #0a3060 100%);
+      padding: 28px 40px;
+      display: flex; align-items: center; gap: 24px;
+      border-bottom: 3px solid #1565c0;
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg,#1565c0,#42a5f5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .hdr-text h1 { font-size: 26px; font-weight: 700; color: #fff; }
+    .hdr-text .title { font-size: 14px; color: #64b5f6; margin-top: 3px; }
+    .hdr-text .contact { font-size: 12px; color: #90caf9; margin-top: 6px; }
+    .badge {
+      margin-left: auto; background: #1b5e20; color: #a5d6a7;
+      font-size: 11px; font-weight: 600; padding: 6px 14px;
+      border-radius: 20px; white-space: nowrap; border: 1px solid #2e7d32;
+    }
+
+    /* ── KPI BAR ── */
+    .kpi-bar {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      padding: 18px 40px; background: #0e1c2a;
+      border-bottom: 1px solid #1a2d40;
+    }
+    .kpi {
+      flex: 1; min-width: 130px;
+      background: #132233; border-radius: 10px;
+      padding: 14px 18px; border-left: 4px solid #1565c0; text-align: center;
+    }
+    .kpi .val { font-size: 26px; font-weight: 700; color: #42a5f5; }
+    .kpi .lbl { font-size: 11px; color: #78909c; margin-top: 3px; text-transform: uppercase; letter-spacing: .8px; }
+
+    /* ── ACHIEVEMENTS BANNER ── */
+    .achievements {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      padding: 16px 40px; background: #0b1a28;
+    }
+    .ach-card {
+      flex: 1; min-width: 200px;
+      background: linear-gradient(135deg,#0d47a1,#1565c0);
+      border-radius: 10px; padding: 14px 18px;
+    }
+    .ach-card .num { font-size: 28px; font-weight: 700; color: #fff; }
+    .ach-card .desc { font-size: 12px; color: #bbdefb; margin-top: 4px; line-height: 1.5; }
+
+    /* ── MAIN GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px; padding: 18px 40px 32px;
+    }
+    .card {
+      background: #132233; border-radius: 12px;
+      padding: 20px; border: 1px solid #1e3448;
+    }
+    .card.wide { grid-column: 1 / -1; }
+    .card h2 {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+      color: #42a5f5; margin-bottom: 16px;
+      border-bottom: 1px solid #1e3448; padding-bottom: 8px;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { list-style: none; position: relative; padding-left: 20px; }
+    .timeline::before {
+      content:''; position:absolute; left:5px; top:6px; bottom:6px;
+      width:2px; background:#1e3448;
+    }
+    .timeline li { position: relative; margin-bottom: 20px; }
+    .dot {
+      position: absolute; left: -19px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+    }
+    .tl-content .role  { font-size: 14px; font-weight: 600; color: #e0e6ed; }
+    .tl-content .co    { font-size: 13px; color: #42a5f5; }
+    .tl-content .dates { font-size: 11px; color: #78909c; margin-top: 2px; }
+    .tl-content .note  { font-size: 11px; color: #a5d6a7; margin-top: 4px; }
+
+    /* ── SKILL BARS ── */
+    .skill-row { margin-bottom: 11px; }
+    .skill-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; color: #b0bec5; }
+    .bar-bg { background: #1e3448; border-radius: 4px; height: 7px; }
+    .bar-fill { height: 7px; border-radius: 4px; background: linear-gradient(90deg,#0d47a1,#42a5f5); }
+
+    /* ── TAGS ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      background: #0d2137; color: #90caf9;
+      padding: 4px 11px; border-radius: 14px; font-size: 11px;
+      border: 1px solid #1565c0;
+    }
+    .tag.green  { background: #0a1f0a; color: #a5d6a7; border-color: #2e7d32; }
+    .tag.orange { background: #1f1200; color: #ffcc80; border-color: #e65100; }
+
+    /* ── PUBLICATIONS ── */
+    .pub-list { list-style: none; }
+    .pub-list li {
+      font-size: 12px; color: #90a4ae; padding: 6px 0;
+      border-bottom: 1px solid #1a2d40; line-height: 1.6;
+    }
+    .pub-list li:last-child { border-bottom: none; }
+
+    /* ── EDU ── */
+    .edu { font-size: 13px; line-height: 1.8; color: #b0bec5; }
+    .edu strong { color: #e0e6ed; }
+
+    canvas { max-width: 100%; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="avatar">ST</div>
+  <div class="hdr-text">
+    <h1>Shaikh Muhammad Tahir</h1>
+    <div class="title">Lead Data Analyst &nbsp;|&nbsp; Data Analytics &amp; Insight</div>
+    <div class="contact">📧 tahir.shaikh987@gmail.com &nbsp;|&nbsp; 📞 +971 583 022050</div>
+  </div>
+  <div class="badge">📍 Dubai, UAE</div>
+</header>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+  <div class="kpi"><div class="val">10+</div><div class="lbl">Years Experience</div></div>
+  <div class="kpi"><div class="val">6</div><div class="lbl">Companies</div></div>
+  <div class="kpi"><div class="val">80+</div><div class="lbl">Dashboards Migrated</div></div>
+  <div class="kpi"><div class="val">30%</div><div class="lbl">Reporting Time Saved</div></div>
+  <div class="kpi"><div class="val">20%</div><div class="lbl">Retention Uplift</div></div>
+  <div class="kpi"><div class="val">5+</div><div class="lbl">Industries</div></div>
+  <div class="kpi"><div class="val">3</div><div class="lbl">Publications</div></div>
+</div>
+
+<!-- ACHIEVEMENTS BANNER -->
+<div class="achievements">
+  <div class="ach-card">
+    <div class="num">80+ Dashboards</div>
+    <div class="desc">Migrated from Tableau → Power BI with governance &amp; RLS, cutting manual reporting by 30%</div>
+  </div>
+  <div class="ach-card" style="background:linear-gradient(135deg,#1b5e20,#2e7d32)">
+    <div class="num">+20% Retention</div>
+    <div class="desc">User Expiry Tracking Report identified churn risk and drove targeted retention campaigns</div>
+  </div>
+  <div class="ach-card" style="background:linear-gradient(135deg,#4a148c,#7b1fa2)">
+    <div class="num">+15% Retention</div>
+    <div class="desc">K-Means clustering segmented users into Winners / Losers / Neutral for personalized campaigns</div>
+  </div>
+  <div class="ach-card" style="background:linear-gradient(135deg,#bf360c,#e64a19)">
+    <div class="num">C-Suite Ready</div>
+    <div class="desc">Executive dashboards for CEOs &amp; CFOs covering Sales Volume, Revenue, Active Users &amp; Profit Margins</div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="grid">
+
+  <!-- Career Timeline -->
+  <div class="card">
+    <h2>Career Timeline</h2>
+    <ul class="timeline">
+      <li>
+        <div class="dot" style="background:#42a5f5"></div>
+        <div class="tl-content">
+          <div class="role">Lead Data Analyst</div>
+          <div class="co">The Entertainer – Dubai 🇦🇪</div>
+          <div class="dates">Aug 2025 – Present</div>
+          <div class="note">Power BI migration · Executive dashboards · RLS governance</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot" style="background:#1e88e5"></div>
+        <div class="tl-content">
+          <div class="role">Lead Data Analyst</div>
+          <div class="co">The Entertainer Pvt. Ltd – Pakistan 🇵🇰</div>
+          <div class="dates">Dec 2020 – Jul 2025</div>
+          <div class="note">Tableau · Azure Databricks · K-Means CRM segmentation</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot" style="background:#66bb6a"></div>
+        <div class="tl-content">
+          <div class="role">Business Intelligence Analyst</div>
+          <div class="co">Gourmet Foods Pakistan</div>
+          <div class="dates">Mar 2017 – Nov 2020</div>
+          <div class="note">SSRS · SSAS · Data Warehouse · ETL/SSIS</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot" style="background:#ffa726"></div>
+        <div class="tl-content">
+          <div class="role">Research Executive (DP) – Quantitative</div>
+          <div class="co">DNA Pakistan</div>
+          <div class="dates">Sep 2015 – Mar 2017</div>
+          <div class="note">Tableau · Power BI · SPSS · ACSI</div>
+        </div>
+      </li>
+      <li>
+        <div class="dot" style="background:#ab47bc"></div>
+        <div class="tl-content">
+          <div class="role">Research Executive – Statistics Ops</div>
+          <div class="co">Foresight Research Private Limited</div>
+          <div class="dates">Nov 2013 – Sep 2015</div>
+          <div class="note">Philip Morris · Unilever · Clustering · Significance Testing</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Radar Chart -->
+  <div class="card">
+    <h2>Core Competency Radar</h2>
+    <canvas id="radarChart"></canvas>
+  </div>
+
+  <!-- Technical Skill Bars -->
+  <div class="card">
+    <h2>Technical Skills</h2>
+    <div class="skill-row">
+      <div class="skill-label"><span>Power BI / Tableau / Oracle BI</span><span>97%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:97%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>SQL / Logical Data Modelling</span><span>92%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:92%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>ETL / Data Warehousing</span><span>92%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:92%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Azure Databricks / Data Factory</span><span>88%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:88%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>MS Excel (Advanced)</span><span>95%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:95%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Python / R</span><span>78%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:78%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>AWS Cloud</span><span>75%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:75%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>SPSS / Statistical Analysis</span><span>85%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>DAX / Power BI Governance / RLS</span><span>90%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:90%"></div></div>
+    </div>
+  </div>
+
+  <!-- Experience Duration Chart -->
+  <div class="card">
+    <h2>Experience Duration by Role (Years)</h2>
+    <canvas id="expBar"></canvas>
+  </div>
+
+  <!-- Industry Exposure -->
+  <div class="card">
+    <h2>Industry Exposure</h2>
+    <canvas id="industryChart" style="max-height:200px"></canvas>
+    <div class="tags" style="margin-top:14px">
+      <span class="tag">Tech / SaaS</span>
+      <span class="tag">Electronics</span>
+      <span class="tag">FMCG</span>
+      <span class="tag">Retail</span>
+      <span class="tag">Media & News</span>
+      <span class="tag">Market Research</span>
+      <span class="tag">Loyalty & CRM</span>
+    </div>
+  </div>
+
+  <!-- Key Achievements -->
+  <div class="card">
+    <h2>Key Achievements</h2>
+    <div class="skill-row">
+      <div class="skill-label"><span>Tableau → Power BI Migration (80+ dashboards)</span><span>✅</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#1565c0,#42a5f5)"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Manual Reporting Time Reduction</span><span>30%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:30%;background:linear-gradient(90deg,#1b5e20,#66bb6a)"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>User Retention Uplift (Expiry Tracking)</span><span>20%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:20%;background:linear-gradient(90deg,#e65100,#ffa726)"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>User Retention Uplift (Segmentation)</span><span>15%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#4a148c,#ab47bc)"></div></div>
+    </div>
+    <div style="margin-top:14px" class="tags">
+      <span class="tag green">RLS &amp; Governance</span>
+      <span class="tag green">Automated Email Reports</span>
+      <span class="tag green">K-Means Clustering CRM</span>
+      <span class="tag green">C-Suite Executive Dashboards</span>
+      <span class="tag green">Loyalty Segmentation</span>
+    </div>
+  </div>
+
+  <!-- Tools Used per Role -->
+  <div class="card">
+    <h2>Tools Used per Role</h2>
+    <canvas id="toolsBar"></canvas>
+  </div>
+
+  <!-- Key Competencies Tags -->
+  <div class="card">
+    <h2>Key Competencies</h2>
+    <div class="tags">
+      <span class="tag">Business Intelligence</span>
+      <span class="tag">Data Warehousing</span>
+      <span class="tag">ETL Pipelines</span>
+      <span class="tag">Big Data</span>
+      <span class="tag">Azure Databricks</span>
+      <span class="tag">AWS Cloud</span>
+      <span class="tag">CRM / ERP</span>
+      <span class="tag">Data Governance</span>
+      <span class="tag">KPI Design</span>
+      <span class="tag">DAX Optimization</span>
+      <span class="tag">Row-Level Security</span>
+      <span class="tag">Machine Learning</span>
+      <span class="tag">K-Means Clustering</span>
+      <span class="tag">Google Maps Analytics</span>
+      <span class="tag">Trend Analysis</span>
+      <span class="tag">Project Management</span>
+      <span class="tag">Team Leadership</span>
+      <span class="tag">DARD Documentation</span>
+      <span class="tag orange">Python</span>
+      <span class="tag orange">R</span>
+      <span class="tag orange">SQL</span>
+    </div>
+  </div>
+
+  <!-- Education & Workshops -->
+  <div class="card">
+    <h2>Education &amp; Certifications</h2>
+    <div class="edu">
+      <strong>B.Sc. Statistics (2011)</strong><br/>
+      University of Karachi, Pakistan<br/><br/>
+      <span style="color:#64b5f6">Specialized in:</span><br/>
+      Descriptive Statistics · Probability Theory · Distributions<br/>
+      Hypothesis Testing · Regression Modeling<br/>
+      Advance Regression · Machine Learning Algorithms<br/><br/>
+      <span style="color:#64b5f6">Workshops Attended:</span><br/>
+      Oracle BI EE 12c (3-Day Boot Camp, Aug 2018)<br/>
+      Dissecting &amp; Reassembling Dimensions of Research (AEIRC, 2012)<br/>
+      ISO 9001:2008 &amp; OHSAS 18001:2007 Internal Auditor
+    </div>
+  </div>
+
+  <!-- Publications -->
+  <div class="card">
+    <h2>Publications &amp; Presentations</h2>
+    <ul class="pub-list">
+      <li>Misconceptions of headache and migraine in young Pakistani male sufferers — <em>Pakistan Journal of Health Research, Nov 2012</em></li>
+      <li>STATISTICS AS AN ESSENTIAL RESEARCH TOOL!! — <em>Escalating Research 2(2):16-17, ISSN-2307-812x</em></li>
+      <li>Load Shedding a setback leading to depress generation — <em>Escalating Research 1(4):16-17, ISSN-2307-812x</em></li>
+      <li>Misconception between headache and migraine: a cohort study — <em>AEME Symposium, Islamabad, March 2012</em></li>
+      <li>Association of Hypertension with Chest Pain &amp; Respiratory Problems in MI Patients — <em>1st Intl. Conference, Karachi 2013</em></li>
+      <li>Psycho-social Depression, the leading cause of hypertension in Hyderabad, Pakistan</li>
+    </ul>
+  </div>
+
+</div><!-- /grid -->
+
+<script>
+// ── Radar Chart ──
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['BI & Reporting','ETL / Data Eng.','Cloud (Azure/AWS)','Statistical Analysis','Leadership / PM','Data Modeling','ML & Clustering'],
+    datasets:[{
+      label:'Proficiency',
+      data:[97,92,80,85,82,90,78],
+      backgroundColor:'rgba(21,101,192,0.25)',
+      borderColor:'#42a5f5',
+      pointBackgroundColor:'#64b5f6',
+      borderWidth:2
+    }]
+  },
+  options:{
+    scales:{r:{
+      suggestedMin:0,suggestedMax:100,
+      ticks:{color:'#78909c',backdropColor:'transparent',stepSize:25},
+      grid:{color:'#1e3448'},
+      pointLabels:{color:'#b0bec5',font:{size:10}}
+    }},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// ── Experience Bar (horizontal) ──
+new Chart(document.getElementById('expBar'), {
+  type:'bar',
+  data:{
+    labels:['The Entertainer Dubai','The Entertainer Pakistan','Gourmet Foods','DNA Pakistan','Foresight Research'],
+    datasets:[{
+      label:'Years',
+      data:[1, 4.6, 3.7, 1.5, 1.8],
+      backgroundColor:['#42a5f5','#1e88e5','#66bb6a','#ffa726','#ab47bc'],
+      borderRadius:6
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    scales:{
+      x:{ticks:{color:'#90a4ae'},grid:{color:'#1e3448'},title:{display:true,text:'Years',color:'#78909c'}},
+      y:{ticks:{color:'#b0bec5',font:{size:11}},grid:{display:false}}
+    },
+    plugins:{legend:{display:false}}
+  }
+});
+
+// ── Industry Doughnut ──
+new Chart(document.getElementById('industryChart'), {
+  type:'doughnut',
+  data:{
+    labels:['Tech/Loyalty','FMCG/Food','Electronics','Market Research','Media'],
+    datasets:[{
+      data:[40,20,10,20,10],
+      backgroundColor:['#1565c0','#2e7d32','#c62828','#e65100','#6a1b9a'],
+      borderColor:'#132233',borderWidth:3
+    }]
+  },
+  options:{
+    cutout:'60%',
+    plugins:{legend:{position:'right',labels:{color:'#b0bec5',font:{size:11},padding:8}}}
+  }
+});
+
+// ── Tools per Role stacked bar ──
+new Chart(document.getElementById('toolsBar'), {
+  type:'bar',
+  data:{
+    labels:['Entertainer Dubai','Entertainer PK','Gourmet Foods','DNA Pakistan','Foresight'],
+    datasets:[
+      {label:'Power BI',  data:[5,3,1,1,0], backgroundColor:'#1565c0'},
+      {label:'Tableau',   data:[0,5,2,2,0], backgroundColor:'#42a5f5'},
+      {label:'SQL/ETL',   data:[5,5,5,3,2], backgroundColor:'#0d47a1'},
+      {label:'Databricks',data:[5,4,1,0,0], backgroundColor:'#7b1fa2'},
+      {label:'Excel/SPSS',data:[4,4,4,5,5], backgroundColor:'#2e7d32'},
+    ]
+  },
+  options:{
+    scales:{
+      x:{stacked:true,ticks:{color:'#90a4ae',font:{size:10}},grid:{color:'#1e3448'}},
+      y:{stacked:true,ticks:{color:'#90a4ae'},grid:{color:'#1e3448'},title:{display:true,text:'Usage Score',color:'#78909c'}}
+    },
+    plugins:{legend:{labels:{color:'#b0bec5',font:{size:10}}}}
+  }
+});
+</script>
+</body>
+</html>
